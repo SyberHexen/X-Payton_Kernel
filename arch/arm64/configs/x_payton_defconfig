@@ -2166,7 +2166,7 @@ CONFIG_DIAG_OVER_USB=y
 #
 # DIAG traffic over TTY
 #
-CONFIG_DIAG_OVER_TTY=y
+# CONFIG_DIAG_OVER_TTY is not set
 
 #
 # HSIC/SMUX support for DIAG
