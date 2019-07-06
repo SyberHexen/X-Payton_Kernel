@@ -8098,37 +8098,6 @@ static void hdd_set_thermal_level_cb(void *context, u_int8_t level)
 }
 
 /**
- * Motorola, IKLOCSEN-2877
- * hdd_is_mcc_mode_enabled() - Checks if MCC mode is enabled
- *
- * This is to check if MCC mode is enabled in ini file
- *
- * Return: 1 if it is enabled otherwise 0
- */
-uint8_t hdd_is_mcc_mode_enabled(void)
-{
-    hdd_context_t *hdd_ctx = NULL;
-    void *cds_context = NULL;
-
-    /* Get the global VOSS context.*/
-    cds_context = cds_get_global_context();
-    if (!cds_context) {
-        hdd_err("Global CDS context is Null");
-        return (uint8_t)0;
-    }
-    /* Get the HDD context.*/
-    hdd_ctx = (hdd_context_t *)cds_get_context(QDF_MODULE_ID_HDD);
-
-    if (0 != wlan_hdd_validate_context(hdd_ctx)) {
-        hdd_err("invalid HDD context");
-        return (uint8_t)0;
-    } else {
-        hdd_notice("gEnableMCCMode is enabled");
-        return (uint8_t)hdd_ctx->config->enableMCC;
-    }
-}
-
-/**
  * hdd_restart_sap() - Restarts SAP on the given channel
  * @adapter: AP adapter
  * @channel: Channel
@@ -10154,14 +10123,7 @@ static int hdd_initialize_mac_address(hdd_context_t *hdd_ctx)
 		return 0;
 	}
 
-	hdd_warn("Can't update mac config via wlan_mac.bin, using MAC from serial number");
-
-	status = hdd_update_mac_serial(hdd_ctx);
-	if (QDF_IS_STATUS_SUCCESS(status))
-		return 0;
-
-	hdd_info("MAC is not programmed in wlan_mac.bin ret %d, use default MAC",
-		 status);
+	hdd_info("using default MAC address");
 
 	/* Use fw provided MAC */
 	if (!qdf_is_macaddr_zero(&hdd_ctx->hw_macaddr)) {
